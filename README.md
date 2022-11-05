@@ -1,6 +1,8 @@
 Show Product Stock Status
  Exibe o status de estoque nos modulos e categoria na loja.
- ## A label deve responder como abaixo
+ Compativel com Opencart 3.x.x.x
+ 
+ ## O produto vai receber uma LABEL conforme o estoque do produto
  0 = Label Danger
  5 ou menos = Label Warning
  6 ou mais = Label Sucesso
