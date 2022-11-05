@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Show Products Availability</name>
+  <code>stock_status_product</code>
+  <version>1.1</version>
+  <author>REDS</author>
+  <link>https://www.agenciaprai.com/</link>
+	
+	<file path="catalog/controller/product/category.php">
+    <operation>
+			<search><![CDATA[$this->load->language('product/category');]]></search>
+			<add position="after"><![CDATA[
+			$this->load->language('product/product');;
+			]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[
+				if ($result['quantity'] <= 0) {
+					//$data['product'] = $result['quantity'];
+					$stock = $result['stock_status'];
+				} elseif ($this->config->get('config_stock_display')) {
+					$stock = $result['quantity'];
+				} else {
+					$stock = $this->language->get('text_instock');
+				}
+			]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				'rating'      => $result['rating'],
+			]]></search>
+			<add position="before"><![CDATA[
+				'stock'      		=> $stock,
+				'quantity'	    => $result['quantity'],
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/controller/extension/module/featured.php">
+		<operation>
+			<search><![CDATA[$this->load->model('catalog/product');]]></search>
+			<add position="before"><![CDATA[
+			$this->load->language('product/product');;
+			]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[
+				if ($product_info['quantity'] <= 0) {
+					//$data['product'] = $product_info['quantity'];
+					$stock = $product_info['stock_status'];
+				} elseif ($this->config->get('config_stock_display')) {
+					$stock = $product_info['quantity'];
+				} else {
+					$stock = $this->language->get('text_instock');
+				}
+			]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				'rating'      => $rating,
+			]]></search>
+			<add position="before"><![CDATA[
+				'stock'      		=> $stock,
+				'quantity'	    => $product_info['quantity'],
+			]]></add>
+		</operation>
+	</file>
+	<file path="catalog/controller/extension/module/{latest,special,bestseller}.php">
+		<operation>
+			<search><![CDATA[$this->load->model('catalog/product');]]></search>
+			<add position="before"><![CDATA[
+			$this->load->language('product/product');;
+			]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[$data['products'][] = array(]]></search>
+			<add position="before"><![CDATA[
+				if ($result['quantity'] <= 0) {
+					//$data['product'] = $result['quantity'];
+					$stock = $result['stock_status'];
+				} elseif ($this->config->get('config_stock_display')) {
+					$stock = $result['quantity'];
+				} else {
+					$stock = $this->language->get('text_instock');
+				}
+			]]></add>
+		</operation>
+    <operation>
+			<search><![CDATA[
+				'rating'      => $rating,
+			]]></search>
+			<add position="before"><![CDATA[
+				'stock'      		=> $stock,
+				'quantity'	    => $result['quantity'],
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/view/theme/*/template/product/{category,special,search,manufacturer_info}.twig|catalog/view/theme/*/template/extension/module/{featured,latest,bestseller,special}.twig">
+    <operation>
+			<search><![CDATA[{% if product.rating %}]]></search>
+			<add position="before"><![CDATA[
+				<p>{{ text_stock }} <span class="label {% if (product.quantity <= 0) %}label-danger{% elseif (product.quantity <= 5) %}label-warning{% else %}label-success{% endif %}">{{ product.stock }}</span></p>
+			]]></add>
+		</operation>
+	</file>
+	
+</modification>
